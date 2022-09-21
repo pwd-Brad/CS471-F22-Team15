@@ -12,7 +12,7 @@ Last Name       | First Name      | GitHub Username    | Scrum Role
 --------------- | --------------- | ------------------ | ---------------
 TBD             | TBD             | TBD                | TBDDeveloper
 Mecham          | Matt            | matthewmecham      | Product Owner
-TBD             | TBD             | TBD                | TBDProduct Owner
+Rockenhaus      | Matt            | 4runnerlife        | Scrum Master
 Schmitt         | Brad            | pwd-Brad           | Developer
 
 ## :eyes: :memo: Scrum Linter Reports:
