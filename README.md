@@ -10,7 +10,7 @@ the offending user of proper language.
 
 Last Name       | First Name      | GitHub Username    | Scrum Role
 --------------- | --------------- | ------------------ | ---------------
-Xavier          | Black           | xavierblack5       | Developer
+Black           | Xavier          | xavierblack5       | Developer
 Mecham          | Matt            | matthewmecham      | Product Owner
 Rockenhaus      | Matt            | 4runnerlife        | Scrum Master
 Schmitt         | Brad            | pwd-Brad           | Developer
