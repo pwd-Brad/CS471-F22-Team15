@@ -11,7 +11,7 @@ the offending user of proper language.
 Last Name       | First Name      | GitHub Username    | Scrum Role
 --------------- | --------------- | ------------------ | ---------------
 TBD             | TBD             | TBD                | TBDDeveloper
-TBD             | TBD             | TBD                | TBDScrum Master
+Mecham          | Matt            | matthewmecham      | Product Owner
 TBD             | TBD             | TBD                | TBDProduct Owner
 Schmitt         | Brad            | pwd-Brad           | Developer
 
