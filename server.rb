@@ -46,6 +46,9 @@ class GHAapp < Sinatra::Application
       if @payload['action'] === 'opened'
         handle_issue_opened_event(@payload)
       end
+      if @payload['action'] === 'edited'
+        handle_issue_edited_event(@payload)
+      end
     end
 
     200 # success status
@@ -59,6 +62,13 @@ class GHAapp < Sinatra::Application
       repo = payload['repository']['full_name']
       issue_number = payload['issue']['number']
       @installation_client.add_labels_to_an_issue(repo, issue_number, ['needs-response'])
+    end
+
+    # When an issue is opened, add a label
+    def handle_issue_edited_event(payload)
+      repo = payload['repository']['full_name']
+      issue_number = payload['issue']['number']
+      @installation_client.add_labels_to_an_issue(repo, issue_number, ['ignore'])
     end
 
     # Saves the raw payload and converts the payload to JSON format
