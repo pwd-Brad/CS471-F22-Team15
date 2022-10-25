@@ -70,8 +70,11 @@ class GHAapp < Sinatra::Application
   helpers do
 
     def handle_issues_opened_event(payload)
-      logger.debug 'An issue was created'
-      @app_client.add_comment('https://github.com/matthewmecham/SwearJarTesting', 1, 'Hello world')
+      logger.debug payload 'An issue was created'
+      repo = playload["repository"]["full_name"]
+      number = payload["issue"]["number"]
+      message = "Hello world"
+      @installation_client.add_comment(repo, number, message)
     end
 
     # Saves the raw payload and converts the payload to JSON format
