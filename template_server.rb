@@ -10,6 +10,12 @@ require 'logger'      # Logs debug statements
 set :port, 3000
 set :bind, '0.0.0.0'
 
+# Initialize client with an access token
+client = Octokit::Client.new(:access_token => "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")
+
+user = client.user
+user.login
+# => "defunkt"
 
 # This is template code to create a GitHub App server.
 # You can read more about GitHub Apps here: # https://developer.github.com/apps/
@@ -71,7 +77,7 @@ class GHAapp < Sinatra::Application
 
     def handle_issues_opened_event(payload)
       logger.debug 'An issue was created'
-      Octokit.add_comment("matthewmecham/SwearJarTesting", 1, "Hello world")
+      Octokit.add_comment("matthewmecham/SwearJarTesting", 1, "Hello world") # Maybe this will work, maybe it won't
     end
 
     # Saves the raw payload and converts the payload to JSON format
