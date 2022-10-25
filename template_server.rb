@@ -77,7 +77,7 @@ class GHAapp < Sinatra::Application
 
     def handle_issues_opened_event(payload)
       logger.debug 'An issue was created'
-      Octokit.add_comment("matthewmecham/SwearJarTesting", 1, "Hello world") # Maybe this will work, maybe it won't
+      client.add_comment("matthewmecham/SwearJarTesting", 1, "Hello world") # Maybe this will work, maybe it won't
     end
 
     # Saves the raw payload and converts the payload to JSON format
