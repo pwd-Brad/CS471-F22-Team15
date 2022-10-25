@@ -9,3 +9,4 @@ gem 'puma'
 gem 'reel'
 gem 'http'
 gem 'webrick'
+gem "octokit", "~> 5.0"
