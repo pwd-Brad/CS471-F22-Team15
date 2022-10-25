@@ -71,7 +71,7 @@ class GHAapp < Sinatra::Application
 
     def handle_issues_opened_event(payload)
       logger.debug 'An issue was created'
-      @app_client.add_comment("matthewmecham/SwearJarTesting", 1, "Hello world")
+      @app_client.add_comment('https://github.com/matthewmecham/SwearJarTesting', 1, 'Hello world')
     end
 
     # Saves the raw payload and converts the payload to JSON format
