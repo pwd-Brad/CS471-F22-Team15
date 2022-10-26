@@ -71,6 +71,10 @@ class GHAapp < Sinatra::Application
 
     def handle_issues_opened_event(payload)
       logger.debug 'An issue was created'
+      repo = payload["repository"]["full_name"]
+      number = payload["issue"]["number"]
+      message = "Hello world"
+      @installation_client.add_comment(repo, number, message)
     end
 
     # Saves the raw payload and converts the payload to JSON format
@@ -94,14 +98,14 @@ class GHAapp < Sinatra::Application
     # a malicious third party.
     def authenticate_app
       payload = {
-          # The time that this JWT was issued, _i.e._ now.
-          iat: Time.now.to_i,
+        # The time that this JWT was issued, _i.e._ now.
+        iat: Time.now.to_i,
 
-          # JWT expiration time (10 minute maximum)
-          exp: Time.now.to_i + (10 * 60),
+        # JWT expiration time (10 minute maximum)
+        exp: Time.now.to_i + (10 * 60),
 
-          # Your GitHub App's identifier number
-          iss: APP_IDENTIFIER
+        # Your GitHub App's identifier number
+        iss: APP_IDENTIFIER
       }
 
       # Cryptographically sign the JWT.
