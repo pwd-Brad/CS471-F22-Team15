@@ -49,6 +49,9 @@ class GHAapp < Sinatra::Application
       if @payload['action'] === 'edited'
         handle_issue_edited_event(@payload)
       end
+      if
+        #Placeholder
+      end
     end
 
     200 # success status
