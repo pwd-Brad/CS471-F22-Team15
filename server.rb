@@ -50,6 +50,7 @@ class GHAapp < Sinatra::Application
         handle_issue_edited_event(@payload)
       end
       if
+        #Event handler for comments
         @payload['action'] === 'comment'
         handle_issue_edited_event(@payload) 
       end
