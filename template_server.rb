@@ -73,7 +73,8 @@ class GHAapp < Sinatra::Application
       logger.debug 'An issue was created'
       repo = payload["repository"]["full_name"]
       number = payload["issue"]["number"]
-      message = "Hello world"
+      author = payload["issue"]["user"]["login"]
+      message = "@" + author + ""
       @installation_client.add_comment(repo, number, message)
     end
 
