@@ -66,7 +66,7 @@ class GHAapp < Sinatra::Application
 
     #writes passed hash to swearjar file
     def yaml_write_swearjar(hash)
-      file.write('swearjar.yml', hash.to_yaml)
+      file.write('swearjar.yml', @hash.to_yaml)
     end
 
     # When an issue is opened, add a label
