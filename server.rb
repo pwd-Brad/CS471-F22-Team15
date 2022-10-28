@@ -69,6 +69,9 @@ class GHAapp < Sinatra::Application
       @installation_client.add_labels_to_an_issue(repo, issue_number, ['needs-response'])
     end
 
+    def handle_comment_event(payload)
+    end
+    
     #writes passed hash to swearjar file
     def yaml_write_swearjar(hash)
       file.write('swearjar.yml', @hash.to_yaml)
