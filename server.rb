@@ -49,6 +49,11 @@ class GHAapp < Sinatra::Application
       if @payload['action'] === 'edited'
         handle_issue_edited_event(@payload)
       end
+      if
+        #Event handler for comments
+        @payload['action'] === 'comment'
+        handle_issue_edited_event(@payload) 
+      end
     end
 
     200 # success status
@@ -68,6 +73,11 @@ class GHAapp < Sinatra::Application
     def yaml_read_swearjar(from_file)
       from_file = YAML.load_file("swearjar.yml")
     end
+    
+    #writes passed hash to swearjar file
+    def yaml_write_swearjar(hash)
+      file.write('swearjar.yml', @hash.to_yaml)
+     end
 
     # When an issue is opened, add a label
     def handle_issue_edited_event(payload)
