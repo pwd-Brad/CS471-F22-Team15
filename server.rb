@@ -49,10 +49,9 @@ class GHAapp < Sinatra::Application
       if @payload['action'] === 'edited'
         handle_issue_edited_event(@payload)
       end
-      if
         #Event handler for comments
-        @payload['action'] === 'comment'
-        handle_issue_edited_event(@payload) 
+      if @payload['action'] === 'comment'
+        handle_comment_event(@payload) 
       end
     end
 
@@ -61,6 +60,14 @@ class GHAapp < Sinatra::Application
 
 
   helpers do
+
+    # When there is a comment, grab username from the comment
+    def handle_comment_event(payload)
+      #grab the username from comment
+      username = payload['comment']['user']['login']
+      #grab the content from the comment
+      content = payload['comment']['body']
+    end
 
     # When an issue is opened, add a label
     def handle_issue_opened_event(payload)
