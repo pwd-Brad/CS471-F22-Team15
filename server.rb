@@ -65,6 +65,8 @@ class GHAapp < Sinatra::Application
     def handle_comment_event(payload)
       #grab the username from comment
       username = payload['comment']['user']['login']
+      #grab the content from the comment
+      content = payload['comment']['body']
     end
 
     # When an issue is opened, add a label
