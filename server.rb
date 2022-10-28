@@ -70,8 +70,13 @@ class GHAapp < Sinatra::Application
     end
 
     def handle_comment_event(payload)
+      logger.debug payload
+      repo = payload["repository"]["full_name"]
+      number = payload["comment"]["number"]
+      message ="hello world"
+      @installation_client.add_comment(repo, number, message)
     end
-    
+
     #writes passed hash to swearjar file
     def yaml_write_swearjar(hash)
       file.write('swearjar.yml', @hash.to_yaml)
