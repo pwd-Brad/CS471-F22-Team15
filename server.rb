@@ -69,6 +69,11 @@ class GHAapp < Sinatra::Application
       @installation_client.add_labels_to_an_issue(repo, issue_number, ['needs-response'])
     end
 
+    #writes passed hash to swearjar file
+    def yaml_write_swearjar(hash)
+      file.write('swearjar.yml', @hash.to_yaml)
+    end
+
     # When an issue is opened, add a label
     def handle_issue_edited_event(payload)
       repo = payload['repository']['full_name']
