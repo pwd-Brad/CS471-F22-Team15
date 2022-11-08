@@ -77,6 +77,7 @@ class GHAapp < Sinatra::Application
 
   helpers do
 
+    # Method to handle new issues
     def handle_issues_opened_event(payload)
       logger.debug 'An issue was created'
       repo = payload["repository"]["full_name"]
