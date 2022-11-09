@@ -67,7 +67,9 @@ class GHAapp < Sinatra::Application
     def parse_content(content, user)
       h = Hash.new
       naughty_words = CSV.foreach('naughty_words.csv', headers: true).map(&.to_h)
-
+      naughty_words.each do |hash|
+        hash.each do |key,value|
+          # Use regex to parse content and add to user swear count
     end
 
     #writes passed hash to swearjar file
