@@ -49,10 +49,6 @@ class GHAapp < Sinatra::Application
       if @payload['action'] === 'edited'
         handle_issue_edited_event(@payload)
       end
-        #Event handler for comments
-      if @payload['action'] === 'comment'
-        handle_comment_event(@payload) 
-      end
     end
 
     200 # success status
@@ -61,14 +57,6 @@ class GHAapp < Sinatra::Application
 
   helpers do
 
-    # When there is a comment, grab username from the comment
-    def handle_comment_event(payload)
-      #grab the username from comment
-      username = payload['comment']['user']['login']
-      #grab the content from the comment
-      content = payload['comment']['body']
-    end
-
     # When an issue is opened, add a label
     def handle_issue_opened_event(payload)
       repo = payload['repository']['full_name']
@@ -76,26 +64,16 @@ class GHAapp < Sinatra::Application
       @installation_client.add_labels_to_an_issue(repo, issue_number, ['needs-response'])
     end
 
+    def parse_content(content, user)
+      h = Hash.new
+      naughty_words = CSV.foreach('naughty_words.csv', headers: true).map(&.to_h)
 
-    def handle_comment_event(payload)
-      logger.debug payload
-      repo = payload["repository"]["full_name"]
-      number = payload["comment"]["number"]
-      message ="hello world"
-      @installation_client.add_comment(repo, number, message)
     end
-
-
-    #read from file into instace var for hash
-    def yaml_read_swearjar(from_file)
-      from_file = YAML.load_file("swearjar.yml")
-    end
-    
 
     #writes passed hash to swearjar file
     def yaml_write_swearjar(hash)
       file.write('swearjar.yml', @hash.to_yaml)
-     end
+    end
 
     # When an issue is opened, add a label
     def handle_issue_edited_event(payload)
