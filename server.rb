@@ -49,6 +49,12 @@ class GHAapp < Sinatra::Application
       if @payload['action'] === 'edited'
         handle_issue_edited_event(@payload)
       end
+
+        #Event handler for comments
+      if @payload['action'] === 'comment'
+        handle_comment_event(@payload) 
+        parse_payload_for_user(@payload)
+      end
     end
 
     200 # success status
@@ -56,6 +62,24 @@ class GHAapp < Sinatra::Application
 
 
   helpers do
+
+
+    #When a comment is created this will parse the payload and return the user
+    def parse_payload_for_user(@payload)
+      result = JSON.parse(open(@payload))
+      result.each do |key, value|
+        puts "user[#{login}] = #{value}"
+      end
+    end
+
+
+    # When there is a comment, grab username from the comment
+    def handle_comment_event(payload)
+      #grab the username from comment
+      username = payload['comment']['user']['login']
+      #grab the content from the comment
+      content = payload['comment']['body']
+    end
 
     # When an issue is opened, add a label
     def handle_issue_opened_event(payload)

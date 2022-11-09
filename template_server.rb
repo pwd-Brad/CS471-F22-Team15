@@ -77,11 +77,13 @@ class GHAapp < Sinatra::Application
 
   helpers do
 
+    # Method to handle new issues
     def handle_issues_opened_event(payload)
       logger.debug 'An issue was created'
       repo = payload["repository"]["full_name"]
       number = payload["issue"]["number"]
       author = payload["issue"]["user"]["login"]
+      content = payload['comment']['body']
       message = "Looks like @" + author + " posted a new issue. You better not say any dirty words."
       @installation_client.add_comment(repo, number, message)
     end
