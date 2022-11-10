@@ -76,6 +76,14 @@ class GHAapp < Sinatra::Application
       @installation_client.add_labels_to_an_issue(repo, issue_number, ['needs-response'])
     end
 
+    def parse_content(content, user)
+      # Stores swearjar value for this content
+      swearcount = 0
+
+      naughty_words = CSV.read('naughty_words.csv')
+      h = naughty_words.to_h()
+
+    end
 
     def handle_comment_event(payload)
       logger.debug payload
@@ -95,7 +103,7 @@ class GHAapp < Sinatra::Application
     #writes passed hash to swearjar file
     def yaml_write_swearjar(hash)
       file.write('swearjar.yml', @hash.to_yaml)
-     end
+    end
 
     # When an issue is opened, add a label
     def handle_issue_edited_event(payload)
