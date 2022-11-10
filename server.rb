@@ -56,7 +56,7 @@ class GHAapp < Sinatra::Application
       end
       if @payload['action'] === 'closed'
         handle_comment_event(@payload) 
-        
+        parse_payload_for_user(@payload)
       end
     end
 
