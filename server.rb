@@ -49,11 +49,14 @@ class GHAapp < Sinatra::Application
       if @payload['action'] === 'edited'
         handle_issue_edited_event(@payload)
       end
-
         #Event handler for comments
       if @payload['action'] === 'comment'
         handle_comment_event(@payload) 
         parse_payload_for_user(@payload)
+      end
+      if @payload['action'] === 'closed'
+        handle_comment_event(@payload) 
+        
       end
     end
 
