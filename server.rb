@@ -82,7 +82,11 @@ class GHAapp < Sinatra::Application
 
       naughty_words = CSV.read('naughty_words.csv')
       h = naughty_words.to_h()
-
+      # iterate through hash array
+      h.each do |key,value|
+        swearcount += content.scan(/#{key}/).size
+      end
+      # Look at swearjar, search for user, and add swearcount to their amount owed
     end
 
     def handle_comment_event(payload)
