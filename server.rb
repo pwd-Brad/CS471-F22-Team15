@@ -49,7 +49,9 @@ class GHAapp < Sinatra::Application
       if @payload['action'] === 'edited'
         handle_issue_edited_event(@payload)
       end
-
+      if @payload['action']=== 'reopened'
+        handle_issue_reopened(@payload)
+      end
         #Event handler for comments
       if @payload['action'] === 'comment'
         handle_comment_event(@payload) 
