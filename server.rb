@@ -65,7 +65,7 @@ class GHAapp < Sinatra::Application
 
 
     #When a comment is created this will parse the payload and return the user
-    def parse_payload_for_user(@payload)
+    def parse_payload_for_user(payload)
       result = JSON.parse(open(@payload))
       result.each do |key, value|
         puts "user[#{login}] = #{value}"
