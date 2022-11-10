@@ -84,7 +84,7 @@ class GHAapp < Sinatra::Application
       h = naughty_words.to_h()
       # iterate through hash array
       h.each do |key,value|
-        swearcount += content.scan(/#{key}/).size
+        swearcount += content.scan(/#{key}/).size * value.to_f
       end
       # Look at swearjar, search for user, and add swearcount to their amount owed
     end
