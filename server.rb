@@ -82,11 +82,22 @@ class GHAapp < Sinatra::Application
 
     # When an issue is opened, add a label
     def handle_issue_opened_event(payload)
-      repo = payload['repository']['full_name']
-      issue_number = payload['issue']['number']
-      @installation_client.add_labels_to_an_issue(repo, issue_number, ['needs-response'])
+      logger.debug 'An issue was created'
+      repo = payload["repository"]["full_name"]
+      number = payload["issue"]["number"]
+      author = payload["issue"]["user"]["login"]
+      content = payload['comment']['body']
+      message = "Looks like @" + author + " posted a new issue. You better not say any dirty words."
+      @installation_client.add_comment(repo, number, message)
     end
 
+    # When there is a comment, grab username from the comment
+    def handle_comment_event(payload)
+      #grab the username from comment
+      username = payload['comment']['user']['login']
+      #grab the content from the comment
+      content = payload['comment']['body']
+    end
 
     def handle_comment_event(payload)
       logger.debug payload
