@@ -49,6 +49,7 @@ class GHAapp < Sinatra::Application
       if @payload['action'] === 'edited'
         handle_issue_edited_event(@payload)
       end
+
         #Event handler for comments
       if @payload['action'] === 'comment'
         handle_comment_event(@payload) 
@@ -64,7 +65,7 @@ class GHAapp < Sinatra::Application
 
 
     #When a comment is created this will parse the payload and return the user
-    def parse_payload_for_user(@payload)
+    def parse_payload_for_user(payload)
       result = JSON.parse(open(@payload))
       result.each do |key, value|
         puts "user[#{login}] = #{value}"
@@ -97,6 +98,19 @@ class GHAapp < Sinatra::Application
       username = payload['comment']['user']['login']
       #grab the content from the comment
       content = payload['comment']['body']
+
+    def parse_content(content, user)
+      # Stores swearjar value for this content
+      swearcount = 0
+
+      naughty_words = CSV.read('naughty_words.csv')
+      h = naughty_words.to_h()
+      # iterate through hash array
+      h.each do |key,value|
+        swearcount += content.scan(/#{key}/).size * value.to_f
+      end
+      # Look at swearjar, search for user, and add swearcount to their amount owed
+
     end
 
     def handle_comment_event(payload)
@@ -112,12 +126,11 @@ class GHAapp < Sinatra::Application
     def yaml_read_swearjar(from_file)
       from_file = YAML.load_file("swearjar.yml")
     end
-    
 
     #writes passed hash to swearjar file
     def yaml_write_swearjar(hash)
       file.write('swearjar.yml', @hash.to_yaml)
-     end
+    end
 
     # When an issue is opened, add a label
     def handle_issue_edited_event(payload)
