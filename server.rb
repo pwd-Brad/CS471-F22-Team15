@@ -73,7 +73,6 @@ class GHAapp < Sinatra::Application
 
   helpers do
 
-
     #Will return the title of an issue webhook payload
     def get_issue_title(payload)
         title = payload["issue"]["title"]
@@ -106,8 +105,9 @@ class GHAapp < Sinatra::Application
       repo = payload["repository"]["full_name"]
       number = payload["issue"]["number"]
       author = payload["issue"]["user"]["login"]
-      content = payload['comment']['body']
-      message = "Looks like @" + author + " posted a new issue. You better not say any dirty words."
+      content = payload['issue']['body']
+      message = "Looks like @" + author + " posted a new issue. You better not say any dirty words.
+      You said \"" + content + "\" We've got our eye on you..."
       @installation_client.add_comment(repo, number, message)
     end
 
