@@ -50,8 +50,18 @@ class GHAapp < Sinatra::Application
         handle_issue_edited_event(@payload)
       end
 
+      if @payload['action']=== 'reopened'
+        handle_issue_reopened(@payload)
+        parse_payload_for_user(@payload)
+      end
+
+
         #Event handler for comments
       if @payload['action'] === 'comment'
+        handle_comment_event(@payload) 
+        parse_payload_for_user(@payload)
+      end
+      if @payload['action'] === 'closed'
         handle_comment_event(@payload) 
         parse_payload_for_user(@payload)
       end
@@ -63,10 +73,10 @@ class GHAapp < Sinatra::Application
 
   helpers do
 
-
-    # When an issue is created, this will return the description
-    def get_issue_description(payload)
-      description = payload["milestone"]
+    #Will return the title of an issue webhook payload
+    def get_issue_title(payload)
+        title = payload["issue"]["title"]
+    end
 
     #When a comment is created this will parse the payload and return the user
     def parse_payload_for_user(payload)
@@ -76,7 +86,11 @@ class GHAapp < Sinatra::Application
       end
     end
 
-
+    def handle_issue_reopened(@payload)
+      repo = payload['repository']['full_name']
+      issue_number = payload['issue']['number']
+      @installation_client.add_labels_to_an_issue(repo, issue_number, ['needs-response'])
+    end
     # When there is a comment, grab username from the comment
     def handle_comment_event(payload)
       #grab the username from comment
