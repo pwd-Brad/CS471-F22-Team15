@@ -49,12 +49,19 @@ class GHAapp < Sinatra::Application
       if @payload['action'] === 'edited'
         handle_issue_edited_event(@payload)
       end
+
       if @payload['action']=== 'reopened'
         handle_issue_reopened(@payload)
         parse_payload_for_user(@payload)
       end
+
+
         #Event handler for comments
       if @payload['action'] === 'comment'
+        handle_comment_event(@payload) 
+        parse_payload_for_user(@payload)
+      end
+      if @payload['action'] === 'closed'
         handle_comment_event(@payload) 
         parse_payload_for_user(@payload)
       end
@@ -90,18 +97,48 @@ class GHAapp < Sinatra::Application
 
     # When an issue is opened, add a label
     def handle_issue_opened_event(payload)
-      repo = payload['repository']['full_name']
-      issue_number = payload['issue']['number']
-      @installation_client.add_labels_to_an_issue(repo, issue_number, ['needs-response'])
+      logger.debug 'An issue was created'
+      repo = payload["repository"]["full_name"]
+      number = payload["issue"]["number"]
+      author = payload["issue"]["user"]["login"]
+      content = payload['comment']['body']
+      message = "Looks like @" + author + " posted a new issue. You better not say any dirty words."
+      @installation_client.add_comment(repo, number, message)
     end
 
+    # When there is a comment, grab username from the comment
+    def handle_comment_event(payload)
+      #grab the username from comment
+      username = payload['comment']['user']['login']
+      #grab the content from the comment
+      content = payload['comment']['body']
+
     def parse_content(content, user)
-      # Read from csv and write to array of hashes
-      naughty_words = CSV.foreach('naughty_words.csv', headers: true).map(&.to_h)
-      # iterates though array of hashes
-      naughty_words.each do |hash|
-        hash.each do |key,value|
-          # Use regex to parse content and add to user swear count
+      # Stores swearjar value for this content
+      swearcount = 0
+
+      naughty_words = CSV.read('naughty_words.csv')
+      h = naughty_words.to_h()
+      # iterate through hash array
+      h.each do |key,value|
+        swearcount += content.scan(/#{key}/).size * value.to_f
+      end
+      # Look at swearjar, search for user, and add swearcount to their amount owed
+
+    end
+
+    def handle_comment_event(payload)
+      logger.debug payload
+      repo = payload["repository"]["full_name"]
+      number = payload["comment"]["number"]
+      message ="hello world"
+      @installation_client.add_comment(repo, number, message)
+    end
+
+
+    #read from file into instace var for hash
+    def yaml_read_swearjar(from_file)
+      from_file = YAML.load_file("swearjar.yml")
     end
 
     #writes passed hash to swearjar file
