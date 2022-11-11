@@ -112,6 +112,7 @@ class GHAapp < Sinatra::Application
       username = payload['comment']['user']['login']
       #grab the content from the comment
       content = payload['comment']['body']
+    end
 
     def parse_content(content, user)
       # Stores swearjar value for this content
