@@ -74,6 +74,7 @@ class GHAapp < Sinatra::Application
   helpers do
 
 
+    #Will return the title of an issue webhook payload
     def get_issue_title(payload)
         title = payload["issue"]["title"]
     end
