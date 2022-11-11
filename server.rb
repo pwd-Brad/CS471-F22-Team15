@@ -74,6 +74,10 @@ class GHAapp < Sinatra::Application
   helpers do
 
 
+    def get_issue_title(payload)
+        title = payload["issue"]["title"]
+    end
+
     #When a comment is created this will parse the payload and return the user
     def parse_payload_for_user(payload)
       result = JSON.parse(open(@payload))
