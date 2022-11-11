@@ -64,6 +64,10 @@ class GHAapp < Sinatra::Application
   helpers do
 
 
+    # When an issue is created, this will return the description
+    def get_issue_description(payload)
+      description = payload["milestone"]
+
     #When a comment is created this will parse the payload and return the user
     def parse_payload_for_user(payload)
       result = JSON.parse(open(@payload))
@@ -88,7 +92,8 @@ class GHAapp < Sinatra::Application
       number = payload["issue"]["number"]
       author = payload["issue"]["user"]["login"]
       content = payload['comment']['body']
-      message = "Looks like @" + author + " posted a new issue. You better not say any dirty words."
+      message = "Looks like @" + author + " posted a new issue. You better not say any dirty words.
+      You said \"" + content + "\" We've got our eye on you..."
       @installation_client.add_comment(repo, number, message)
     end
 
