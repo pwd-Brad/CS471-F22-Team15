@@ -91,7 +91,7 @@ class GHAapp < Sinatra::Application
       repo = payload["repository"]["full_name"]
       number = payload["issue"]["number"]
       author = payload["issue"]["user"]["login"]
-      content = payload['comment']['body']
+      content = payload['issue']['body']
       message = "Looks like @" + author + " posted a new issue. You better not say any dirty words.
       You said \"" + content + "\" We've got our eye on you..."
       @installation_client.add_comment(repo, number, message)
