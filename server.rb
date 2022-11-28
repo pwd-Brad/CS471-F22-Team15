@@ -106,9 +106,45 @@ class GHAapp < Sinatra::Application
       number = payload["issue"]["number"]
       author = payload["issue"]["user"]["login"]
       content = payload['issue']['body']
-      message = "Looks like @" + author + " posted a new issue. You better not say any dirty words.
-      You said \"" + content + "\" We've got our eye on you..."
+
+      #From here down is just a test for now
+      list = ["butt", "bafoon", "knave"]
+      total = 20;
+      message = message_to_user(author, list, total)
+      #end of test
+
+      #message = "Looks like @" + author + " posted a new issue. You better not say any dirty words.
+      #You said \"" + content + "\" We've got our eye on you..."
       @installation_client.add_comment(repo, number, message)
+    end
+
+    # This method can be called when a swear is detected
+    # When scanning the content for words that match the naughty_words.csv, store
+    # the matching words into an array and pass them into this function as the
+    # swearList parameter. 
+    # @returns a long string to be sent as a message
+    def message_to_user(username, swearList, total)
+      message = "# Uh Oh! Naughty Detected! \nHey! That type of language can lead to"
+      message += "negative outcomes such as depression, feelings of inadequacy, general contempt for humanity."
+      message += "and in rare cases, rage-filled retaliation. To avoid these scenarios, we here at SwearJar"
+      message += "suggest being a better person. To help incentivize this personal growth, we have increased"
+      message += "your Swear Jar balance. \n### Username \n" + username + " needs some encouragement."
+      message += " Let's go, " + username + "! Being a better person is just a few transactions away! \n"
+      message += "### Naughties Detected \n"
+
+      naughty_words = CSV.read('naughty.csv')
+      h = naughty_words.to_h();
+
+      swearList.each do |item|
+        h.each do|key, value|
+          if item == key
+            message += item + " - $" + value + "\n"
+          end
+        end
+      end
+
+      message += "### Total in the Jar \n$" + total + "\n> You cannot do kindness too soon,"
+      return message += "for you never know how soon it will be too late. -Ralph Waldo Emerson"
     end
 
     # When there is a comment, grab username from the comment
