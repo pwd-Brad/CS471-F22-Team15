@@ -169,7 +169,7 @@ class GHAapp < Sinatra::Application
           iat: Time.now.to_i,
 
           # JWT expiration time (10 minute maximum)
-          exp: Time.now.to_i + (10 * 60),
+          exp: Time.now.to_i + (5 * 60),
 
           # Your GitHub App's identifier number
           iss: APP_IDENTIFIER
