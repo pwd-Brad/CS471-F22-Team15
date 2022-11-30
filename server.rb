@@ -86,7 +86,7 @@ class GHAapp < Sinatra::Application
       end
     end
 
-    def handle_issue_reopened(@payload)
+    def handle_issue_reopened(payload)
       repo = payload['repository']['full_name']
       issue_number = payload['issue']['number']
       @installation_client.add_labels_to_an_issue(repo, issue_number, ['needs-response'])
