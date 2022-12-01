@@ -124,7 +124,7 @@ class GHAapp < Sinatra::Application
     # swearList parameter. 
     # @returns a long string to be sent as a message
     def message_to_user(username, swearList, total)
-      message = "# Uh Oh! Naughty Detected! \nHey! That type of language can lead to"
+      message = "# Uh Oh! Naughty Detected! \nHey! That type of language can lead to "
       message += "negative outcomes such as depression, feelings of inadequacy, general contempt for humanity."
       message += "and in rare cases, rage-filled retaliation. To avoid these scenarios, we here at SwearJar"
       message += "suggest being a better person. To help incentivize this personal growth, we have increased"
