@@ -166,7 +166,8 @@ class GHAapp < Sinatra::Application
         swearcount += content.scan(/#{key}/).size * value.to_f
       end
       # Look at swearjar, search for user, and add swearcount to their amount owed
-
+      from_file = YAML.load_file("swearjar.yml")
+      
     end
 
     def handle_comment_event(payload)
