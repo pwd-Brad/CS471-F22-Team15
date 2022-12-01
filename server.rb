@@ -118,13 +118,24 @@ class GHAapp < Sinatra::Application
       @installation_client.add_comment(repo, number, message)
     end
 
+    # Method to return an array of naughty words used in content
+    def get_naughties(content)
+      naughty_words = CSV.read('naughty.csv')
+      h = naughty_words.to_h()
+      list = Array.new
+      h.each do |key,value|
+        list += content.scan(/#{key}/)
+      end
+      return list
+    end
+
     # This method can be called when a swear is detected
     # When scanning the content for words that match the naughty_words.csv, store
     # the matching words into an array and pass them into this function as the
     # swearList parameter. 
     # @returns a long string to be sent as a message
     def message_to_user(username, swearList, total)
-      message = "# Uh Oh! Naughty Detected! \nHey! That type of language can lead to"
+      message = "# Uh Oh! Naughty Detected! \nHey! That type of language can lead to "
       message += "negative outcomes such as depression, feelings of inadequacy, general contempt for humanity."
       message += "and in rare cases, rage-filled retaliation. To avoid these scenarios, we here at SwearJar"
       message += "suggest being a better person. To help incentivize this personal growth, we have increased"
