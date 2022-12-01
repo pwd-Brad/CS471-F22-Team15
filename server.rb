@@ -147,13 +147,10 @@ class GHAapp < Sinatra::Application
       naughty_words = CSV.read('naughty_words.csv')
       h = naughty_words.to_h();
 
-      total = 0
-
       swearList.each do |item|
         h.each do|key, value|
           if item == key
             message += item + " - $" + value + "\n"
-            total += value.to_f
           end
         end
       end
