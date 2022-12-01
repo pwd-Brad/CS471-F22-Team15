@@ -193,6 +193,8 @@ class GHAapp < Sinatra::Application
       end
       # Write back to the yml file
       File.open("swearjar.yml", "w") { |file| file.write(from_file.to_yaml) }
+      swearcount = from_file[k]
+      return swearcount
     end
 
     def handle_comment_event(payload)
