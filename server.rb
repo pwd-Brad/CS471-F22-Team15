@@ -170,7 +170,19 @@ class GHAapp < Sinatra::Application
         swearcount += content.scan(/#{key}/).size * value.to_f
       end
       # Look at swearjar, search for user, and add swearcount to their amount owed
-
+      from_file = YAML.load_file("swearjar.yml")
+      # Translate to symbol for use in key
+      k = user.to_sym
+      # check if user already exists in swearjar
+      if from_file.key?(k)
+        # if true then add swearcount to already present value
+        from_file[k] += swearcount
+      else
+        # If false add key and have swearcount be the new value
+        from_file[k] = swearcount
+      end
+      # Write back to the yml file
+      File.open("swearjar.yml", "w") { |file| file.write(from_file.to_yaml) }
     end
 
     def handle_comment_event(payload)
