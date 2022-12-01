@@ -7,6 +7,7 @@ require 'jwt'         # Authenticates a GitHub App
 require 'time'        # Gets ISO 8601 representation of a Time object
 require 'logger'      # Logs debug statements
 require 'csv'
+require 'yaml'
 
 set :port, 3000
 set :bind, '0.0.0.0'
@@ -176,7 +177,7 @@ class GHAapp < Sinatra::Application
       # iterate through hash array
       h.each do |key,value|
         swearcount += content.scan(/#{key}/).size * value.to_f
-      return swearcount
+      
       end
       # Look at swearjar, search for user, and add swearcount to their amount owed
       from_file = YAML.load_file("swearjar.yml")
