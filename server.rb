@@ -118,6 +118,17 @@ class GHAapp < Sinatra::Application
       @installation_client.add_comment(repo, number, message)
     end
 
+    # Method to return an array of naughty words used in content
+    def get_naughties(content)
+      naughty_words = CSV.read('naughty.csv')
+      h = naughty_words.to_h()
+      list = Array.new
+      h.each do |key,value|
+        list += content.scan(/#{key}/)
+      end
+      return list
+    end
+
     # This method can be called when a swear is detected
     # When scanning the content for words that match the naughty_words.csv, store
     # the matching words into an array and pass them into this function as the
