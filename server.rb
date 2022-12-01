@@ -177,7 +177,8 @@ class GHAapp < Sinatra::Application
         # If false add key and have swearcount be the new value
         from_file[k] = swearcount
       end
-
+      # Write back to the yml file
+      File.open("swearjar.yml", "w") { |file| file.write(from_file.to_yaml) }
     end
 
     def handle_comment_event(payload)
