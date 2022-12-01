@@ -6,6 +6,7 @@ require 'openssl'     # Verifies the webhook signature
 require 'jwt'         # Authenticates a GitHub App
 require 'time'        # Gets ISO 8601 representation of a Time object
 require 'logger'      # Logs debug statements
+require 'csv'
 
 set :port, 3000
 set :bind, '0.0.0.0'
@@ -100,10 +101,17 @@ class GHAapp < Sinatra::Application
       author = payload["issue"]["user"]["login"]
       content = payload['issue']['body']
 
+      swearcount = parse_content(content, author)
+
+      if swearcount > 0
+        list = get_naughties(content)
+        message = message_to_user(author, list, swearcount)
+      end
+
       #From here down is just a test for now
-      list = ["butt", "bafoon", "knave"]
-      total = 20;
-      message = message_to_user(author, list, total)
+      #list = ["butt", "bafoon", "knave"]
+      #total = 20;
+      #message = message_to_user(author, list, total)
       #end of test
 
       #message = "Looks like @" + author + " posted a new issue. You better not say any dirty words.
@@ -113,7 +121,7 @@ class GHAapp < Sinatra::Application
 
     # Method to return an array of naughty words used in content
     def get_naughties(content)
-      naughty_words = CSV.read('naughty.csv')
+      naughty_words = CSV.read('naughty_words.csv')
       h = naughty_words.to_h()
       list = Array.new
       h.each do |key,value|
@@ -136,7 +144,7 @@ class GHAapp < Sinatra::Application
       message += " Let's go, " + username + "! Being a better person is just a few transactions away! \n"
       message += "### Naughties Detected \n"
 
-      naughty_words = CSV.read('naughty.csv')
+      naughty_words = CSV.read('naughty_words.csv')
       h = naughty_words.to_h();
 
       swearList.each do |item|
@@ -147,7 +155,7 @@ class GHAapp < Sinatra::Application
         end
       end
 
-      message += "### Total in the Jar \n$" + total + "\n> You cannot do kindness too soon,"
+      message += "### Total in the Jar \n$" + total.to_s  + "\n> You cannot do kindness too soon,"
       return message += "for you never know how soon it will be too late. -Ralph Waldo Emerson"
     end
 
@@ -168,6 +176,7 @@ class GHAapp < Sinatra::Application
       # iterate through hash array
       h.each do |key,value|
         swearcount += content.scan(/#{key}/).size * value.to_f
+      return swearcount
       end
       # Look at swearjar, search for user, and add swearcount to their amount owed
       from_file = YAML.load_file("swearjar.yml")
