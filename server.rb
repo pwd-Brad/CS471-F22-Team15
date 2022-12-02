@@ -7,6 +7,7 @@ require 'jwt'         # Authenticates a GitHub App
 require 'time'        # Gets ISO 8601 representation of a Time object
 require 'logger'      # Logs debug statements
 require 'csv'
+require 'yaml'
 
 set :port, 3000
 set :bind, '0.0.0.0'
@@ -170,13 +171,14 @@ class GHAapp < Sinatra::Application
     def parse_content(content, user)
       # Stores swearjar value for this content
       swearcount = 0
+      number_of_bad_words =0
 
       naughty_words = CSV.read('naughty_words.csv')
       h = naughty_words.to_h()
       # iterate through hash array
       h.each do |key,value|
         swearcount += content.scan(/#{key}/).size * value.to_f
-      return swearcount
+        
       end
       # Look at swearjar, search for user, and add swearcount to their amount owed
       from_file = YAML.load_file("swearjar.yml")
@@ -186,12 +188,18 @@ class GHAapp < Sinatra::Application
       if from_file.key?(k)
         # if true then add swearcount to already present value
         from_file[k] += swearcount
+        number_of_bad_words += 1
       else
         # If false add key and have swearcount be the new value
         from_file[k] = swearcount
+        number_of_bad_words += 1
       end
       # Write back to the yml file
       File.open("swearjar.yml", "w") { |file| file.write(from_file.to_yaml) }
+
+      swearcount = from_file[k]
+
+      return swearcount
     end
 
     def handle_comment_event(payload)
