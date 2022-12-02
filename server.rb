@@ -67,6 +67,9 @@ class GHAapp < Sinatra::Application
         parse_payload_for_user(@payload)
       end
       #Event handler for assigned
+      if @payload['action'] === 'assigned'
+        handle_issue_assigned(@payload) 
+      end
     end
 
     200 # success status
@@ -220,6 +223,7 @@ class GHAapp < Sinatra::Application
       issue_number = payload['issue']['number']
       @installation_client.add_labels_to_an_issue(repo, issue_number, ['ignore'])
     end
+    
 
     # Saves the raw payload and converts the payload to JSON format
     def get_payload_request(request)
