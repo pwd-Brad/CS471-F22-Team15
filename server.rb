@@ -67,6 +67,10 @@ class GHAapp < Sinatra::Application
         handle_comment_event(@payload) 
         parse_payload_for_user(@payload)
       end
+      #Event handler for assigned
+      if @payload['action'] === 'assigned'
+        handle_issue_assigned(@payload) 
+      end
     end
 
     200 # success status
@@ -223,6 +227,13 @@ class GHAapp < Sinatra::Application
 
     # When an issue is opened, add a label
     def handle_issue_edited_event(payload)
+      repo = payload['repository']['full_name']
+      issue_number = payload['issue']['number']
+      @installation_client.add_labels_to_an_issue(repo, issue_number, ['ignore'])
+    end
+
+    # When an issue is assigned, add a label
+    def handle_issue_assigned(payload)
       repo = payload['repository']['full_name']
       issue_number = payload['issue']['number']
       @installation_client.add_labels_to_an_issue(repo, issue_number, ['ignore'])
