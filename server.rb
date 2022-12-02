@@ -66,6 +66,7 @@ class GHAapp < Sinatra::Application
         handle_comment_event(@payload) 
         parse_payload_for_user(@payload)
       end
+      #Event handler for assigned
     end
 
     200 # success status
