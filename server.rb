@@ -223,7 +223,13 @@ class GHAapp < Sinatra::Application
       issue_number = payload['issue']['number']
       @installation_client.add_labels_to_an_issue(repo, issue_number, ['ignore'])
     end
-    
+
+    # When an issue is assigned, add a label
+    def handle_issue_assigned(payload)
+      repo = payload['repository']['full_name']
+      issue_number = payload['issue']['number']
+      @installation_client.add_labels_to_an_issue(repo, issue_number, ['ignore'])
+    end
 
     # Saves the raw payload and converts the payload to JSON format
     def get_payload_request(request)
